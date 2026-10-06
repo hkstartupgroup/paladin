@@ -207,7 +207,7 @@ export interface SceneExit {
   label: string;
   requires?: string[];
   hideWhen?: string[];
-  /** 這些旗標成立時，出口封閉（仍顯示並提示 lockedText）。 */
+  /** 這些旗標成立時，出口封閉（仍顯示並提示 lockedText）。旗標前加 "!" 表示須未成立。 */
   lockedWhen?: string[];
   lockedText?: string[];
 }

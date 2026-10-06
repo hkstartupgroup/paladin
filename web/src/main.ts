@@ -51,7 +51,9 @@ function has(flags) {
     !flags ||
     flags.length === 0 ||
     flags.every(function (f) {
-      return state.flags[f] === true;
+      return f.charAt(0) === "!"
+        ? state.flags[f.slice(1)] !== true
+        : state.flags[f] === true;
     })
   );
 }

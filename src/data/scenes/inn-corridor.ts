@@ -7,7 +7,7 @@ export const innCorridor: GameScene = {
     {
       to: "inn-room",
       label: "回李逍遙的房間",
-      lockedWhen: ["inn.dawn"],
+      lockedWhen: ["inn.dawn", "!linger.joined"],
       lockedText: [
         "李逍遙的房門外守著兩名苗人，一臉凶相，怎麼也不肯讓他進去。",
         "（房間被客倌佔了…也許能從柴房的密道溜回去。）",

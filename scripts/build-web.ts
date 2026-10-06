@@ -27,7 +27,10 @@ const html = `<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>仙劍奇俠傳 · 終端文字版</title>
+<title>仙劍奇俠傳 · 終端文字版（第一章試玩）</title>
+<meta name="description" content="《仙劍奇俠傳》終端文字版，目前為第一章「仙島求藥」試玩版：以升級練武與劇情為核心的純文字 RPG。">
+<meta property="og:title" content="仙劍奇俠傳 · 終端文字版（第一章試玩）">
+<meta property="og:description" content="《仙劍奇俠傳》終端文字版，目前為第一章「仙島求藥」試玩版：以升級練武與劇情為核心的純文字 RPG。">
 <style>
 ${css}</style>
 </head>

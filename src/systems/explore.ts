@@ -5,9 +5,14 @@ import { GameScene, GameState, Interactable, SceneExit } from "../models/types";
 const DONE_PREFIX = "ia:";
 const ENTER_PREFIX = "enter:";
 
+// 旗標以 "!" 開頭時表示「該旗標須未成立」，例如 "!linger.joined"。
 export function hasFlags(state: GameState, flags?: string[]): boolean {
   if (!flags || flags.length === 0) return true;
-  return flags.every((f) => state.flags[f] === true);
+  return flags.every((f) =>
+    f.startsWith("!")
+      ? state.flags[f.slice(1)] !== true
+      : state.flags[f] === true,
+  );
 }
 
 export function isDone(state: GameState, id: string): boolean {

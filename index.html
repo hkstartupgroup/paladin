@@ -3,7 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>仙劍奇俠傳 · 終端文字版</title>
+<title>仙劍奇俠傳 · 終端文字版（第一章試玩）</title>
+<meta name="description" content="《仙劍奇俠傳》終端文字版，目前為第一章「仙島求藥」試玩版：以升級練武與劇情為核心的純文字 RPG。">
+<meta property="og:title" content="仙劍奇俠傳 · 終端文字版（第一章試玩）">
+<meta property="og:description" content="《仙劍奇俠傳》終端文字版，目前為第一章「仙島求藥」試玩版：以升級練武與劇情為核心的純文字 RPG。">
 <style>
 :root {
   --bg: #10131a;
@@ -219,7 +222,7 @@ button:disabled {
       "s-intro": {
         id: "s-intro",
         text: [
-          "李逍遙：動手吧～十八年後，又是一條好漢！",
+          "李逍遙：鬼婆動手吧～十八年後，又是一條好漢！",
           "李大娘：李逍遙！你皮在癢啊？敢說老娘是什麼鬼婆！",
           "李大娘：又在作白日夢了！你可老大不小了，整天瘋瘋癲癲的，也不學學做正經事！",
           "李逍遙：嬸嬸～妳不要每次叫人起床，都拿鍋啊、鏟的胡敲一通～會嚇死人吶！",
@@ -1843,7 +1846,7 @@ button:disabled {
       {
         to: "inn-room",
         label: "回李逍遙的房間",
-        lockedWhen: ["inn.dawn"],
+        lockedWhen: ["inn.dawn", "!linger.joined"],
         lockedText: [
           "李逍遙的房門外守著兩名苗人，一臉凶相，怎麼也不肯讓他進去。",
           "（房間被客倌佔了…也許能從柴房的密道溜回去。）"
@@ -3261,7 +3264,9 @@ button:disabled {
   var ENTER_PREFIX = "enter:";
   function hasFlags(state2, flags) {
     if (!flags || flags.length === 0) return true;
-    return flags.every((f) => state2.flags[f] === true);
+    return flags.every(
+      (f) => f.startsWith("!") ? state2.flags[f.slice(1)] !== true : state2.flags[f] === true
+    );
   }
   function isDone(state2, id) {
     return state2.flags[DONE_PREFIX + id] === true;
@@ -3476,7 +3481,7 @@ button:disabled {
   }
   function has(flags) {
     return !flags || flags.length === 0 || flags.every(function(f) {
-      return state.flags[f] === true;
+      return f.charAt(0) === "!" ? state.flags[f.slice(1)] !== true : state.flags[f] === true;
     });
   }
   function alive(list) {

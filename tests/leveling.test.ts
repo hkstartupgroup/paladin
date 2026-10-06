@@ -1154,6 +1154,13 @@ test("李逍遙房讓給苗人後：走廊房門封閉，須從柴房密道進�
     availableExits(shed, state).some((e) => e.to === "inn-room"),
     "讓房後可從柴房密道溜進自己房間",
   );
+
+  // 擊退房中苗人嘍囉（趙靈兒獲救）後，走廊房門不再有守衛，恢復可通行。
+  state.flags["linger.joined"] = true;
+  assert.ok(
+    availableExits(corridor, state).some((e) => e.to === "inn-room"),
+    "擊退苗人後，走廊房門應解封",
+  );
 });
 
 test("趙靈兒入隊自帶初始裝備（仙女劍／布袍／青絲巾／草鞋）", () => {
