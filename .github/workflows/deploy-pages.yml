@@ -44,7 +44,7 @@ jobs:
       - name: Prepare site
         run: |
           mkdir -p _site
-          cp index.html paladin.html _site/
+          cp index.html paladin.html 404.html _site/
 
       - name: Setup Pages
         uses: actions/configure-pages@v5

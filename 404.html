@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>仙劍奇俠傳 · 終端文字版</title>
+    <script>
+      // GitHub Pages 對不存在的路徑會回傳本頁（根目錄的 404.html）。
+      // 若網址結尾是 /paladin（少打了 .html），導回站台根目錄（即 index.html）。
+      (function () {
+        var path = location.pathname.replace(/\/+$/, "");
+        if (/\/paladin$/.test(path)) {
+          location.replace(path.replace(/\/paladin$/, "/"));
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <p>找不到這個頁面。請<a href="./">回到《仙劍奇俠傳 · 終端文字版》</a>。</p>
+  </body>
+</html>

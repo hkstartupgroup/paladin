@@ -21,8 +21,9 @@ paladin/
 ├── package.json
 ├── tsconfig.json
 ├── README.md
-├── index.html                       # Pages 入口（轉往 paladin.html）
-├── paladin.html                     # 網頁版產物（npm run build:web 產生）
+├── index.html                       # 網頁版入口（遊戲本體；npm run build:web 產生）
+├── paladin.html                     # 相容別名：轉往 index.html
+├── 404.html                         # Pages 404 頁：網址為 /paladin 時導回根目錄
 ├── .github/workflows/               # GitHub Actions（自動建置並部署 Pages）
 ├── scripts/
 │   └── build-web.ts                 # 以 esbuild 打包單一 HTML（打包 web/src，共用 src/ 資料與引擎）

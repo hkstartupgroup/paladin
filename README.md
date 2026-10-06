@@ -13,7 +13,7 @@ npm start                # 開始遊戲（終端版）
 npm run dev              # 開發模式（熱重載）
 npm test                 # 執行單元測試
 npm run build            # 編譯並型別檢查
-npm run build:web        # 打包單一 HTML 網頁版（輸出 paladin.html，約 126 KB）
+npm run build:web        # 打包單一 HTML 網頁版（輸出 index.html，約 126 KB）
 ```
 
 需求：Node.js >= 20.6。網頁版為單一自帶檔，雙擊即可玩；線上分享與部署見 [docs/deploy.md](docs/deploy.md)。

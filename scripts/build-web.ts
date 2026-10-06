@@ -48,6 +48,8 @@ ${js}</script>
 </html>
 `;
 
-const out = path.join(root, "paladin.html");
+// 只輸出 index.html（遊戲本體）。paladin.html 為相容別名，內容固定轉往
+// index.html（靜態檔，不由此腳本產生）。
+const out = path.join(root, "index.html");
 fs.writeFileSync(out, html, "utf-8");
 console.log(`已輸出 ${out}（${(html.length / 1024).toFixed(1)} KB）`);
