@@ -30,7 +30,9 @@ export class StoryRunner {
     private readonly hooks: StoryHooks,
   ) {}
 
-  async run(startId: string): Promise<void> {
+  // 回傳 true 表示劇情走完（含章節結束）；false 表示因戰鬥失敗而中斷，
+  // 呼叫端（互動）據此判定是否標記完成，使該互動可重試。
+  async run(startId: string): Promise<boolean> {
     let nodeId: string | undefined = startId;
     while (nodeId) {
       const node: StoryNode = this.nodes[nodeId];
@@ -49,14 +51,14 @@ export class StoryRunner {
       if (node.battle && node.battle.length > 0) {
         ui.blank();
         const won = await this.hooks.battle(node.battle, node.boss);
-        if (!won) return;
+        if (!won) return false;
       }
 
       if (node.end) {
         ui.blank();
         ui.narrate("（本章結束 · 後續章節敬請期待）");
         await pause();
-        return;
+        return true;
       }
 
       if (node.choices && node.choices.length > 0) {
@@ -71,5 +73,6 @@ export class StoryRunner {
         nodeId = node.next;
       }
     }
+    return true;
   }
 }

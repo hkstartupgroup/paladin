@@ -10,8 +10,9 @@ import {
   GAME_SUBTITLE,
   GAME_TITLE,
   MAX_LEVEL,
+  SUZHOU_RESPAWN_SCENE,
 } from "../../src/config/constants";
-import { CHAPTER_01 } from "../../src/data/chapters/chapter01";
+import { STORY_NODES } from "../../src/data/chapters";
 import { CHARACTER_TEMPLATES } from "../../src/data/characters";
 import { AREAS, ENEMIES } from "../../src/data/enemies";
 import { ITEMS } from "../../src/data/items";
@@ -25,7 +26,7 @@ import { SKILLS } from "../../src/data/skills";
 export const D = {
   START_SCENE,
   SCENES,
-  STORY: CHAPTER_01.nodes,
+  STORY: STORY_NODES,
   ENEMIES,
   AREAS,
   ITEMS,
@@ -43,4 +44,5 @@ export const D = {
   EQUIP_SLOTS,
   GAME_TITLE,
   GAME_SUBTITLE,
+  SUZHOU_RESPAWN_SCENE,
 };

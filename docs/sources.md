@@ -14,3 +14,5 @@
 - [仙劍奇俠傳系列 — 萌娘百科](https://mzh.moegirl.tw/%E4%BB%99%E5%89%91%E5%A5%87%E4%BE%A0%E4%BC%A0)：系列沿革與各版本差異。
 
 > 本作為同人致敬與學習用途，禁止商用；上述資料之版權歸原作者與原網站所有。
+
+各章台詞之逐字謄錄稿存於 [story/main/](story/main/)（[ch01.md](story/main/ch01.md) 第一章、[ch02.md](story/main/ch02.md) 第二章），供 `src/data/chapters/` 對照切分。

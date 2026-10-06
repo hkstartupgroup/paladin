@@ -17,6 +17,18 @@ import { lotusPond } from "./lotus-pond";
 import { peachForest } from "./peach-forest";
 import { moonPalaceOut } from "./moon-palace-out";
 import { moonPalace } from "./moon-palace";
+import { suzhouOutskirts } from "./suzhou-outskirts";
+import { suzhouInn } from "./suzhou-inn";
+import { suzhouStreet } from "./suzhou-street";
+import { linjiaArena } from "./linjia-arena";
+import { linjiaHall } from "./linjia-hall";
+import { linjiaGarden } from "./linjia-garden";
+import { linjiaWestRoom } from "./linjia-west-room";
+import { linjiaBackhill } from "./linjia-backhill";
+import { yinlongCave } from "./yinlong-cave";
+import { yinlongCaveInner } from "./yinlong-cave-inner";
+import { yinlongCaveCourtyard } from "./yinlong-cave-courtyard";
+import { yinlongCaveHall } from "./yinlong-cave-hall";
 
 export const START_SCENE = "inn-room";
 
@@ -38,4 +50,16 @@ export const SCENES: Record<string, GameScene> = {
   "peach-forest": peachForest,
   "moon-palace-out": moonPalaceOut,
   "moon-palace": moonPalace,
+  "suzhou-outskirts": suzhouOutskirts,
+  "suzhou-inn": suzhouInn,
+  "suzhou-street": suzhouStreet,
+  "linjia-arena": linjiaArena,
+  "linjia-hall": linjiaHall,
+  "linjia-garden": linjiaGarden,
+  "linjia-west-room": linjiaWestRoom,
+  "linjia-backhill": linjiaBackhill,
+  "yinlong-cave": yinlongCave,
+  "yinlong-cave-inner": yinlongCaveInner,
+  "yinlong-cave-courtyard": yinlongCaveCourtyard,
+  "yinlong-cave-hall": yinlongCaveHall,
 };

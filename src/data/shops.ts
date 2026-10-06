@@ -39,4 +39,33 @@ export const SHOPS: Record<string, Shop> = {
     greeting: ["洪大夫：要抓藥嗎？止血草、還神丹、還魂香，我這藥鋪都有。"],
     stock: ["styptic-herb", "qi-pill", "soul-pill"],
   },
+
+  // ── 第二章・蘇州城內店鋪 ──
+  "suzhou-doctor": {
+    id: "suzhou-doctor",
+    name: "蘇州回春堂藥鋪",
+    greeting: [
+      "藥鋪掌櫃：客官可是要買傷藥？蘇州城裡就數咱家的藥材最齊全。",
+    ],
+    stock: ["styptic-herb", "herb", "qi-pill", "soul-pill", "note-charm"],
+  },
+  "suzhou-blacksmith": {
+    id: "suzhou-blacksmith",
+    name: "蘇州鐵鋪",
+    greeting: ["鐵匠：要打兵器還是護具？蘇州城裡的刀劍，我打的稱得上數一數二。"],
+    stock: [
+      "short-blade",
+      "shoulder-guard",
+      "cloak",
+      "iron-boots",
+      "wrist-guard",
+      "iron-wrist-guard",
+    ],
+  },
+  "suzhou-draper": {
+    id: "suzhou-draper",
+    name: "蘇州布莊",
+    greeting: ["布莊掌櫃：瞧瞧布料鞋帽？咱這布靴輕便耐走，走遠路最合用。"],
+    stock: ["cloth-boots", "straw-shoes", "hairpin", "jade-pendant", "silk-scarf"],
+  },
 };

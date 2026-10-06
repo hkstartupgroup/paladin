@@ -1,11 +1,14 @@
 import { EquipSlot } from "../models/types";
 
 export const GAME_TITLE = "仙劍奇俠傳";
-export const GAME_SUBTITLE = "終端文字版 · 第一章 仙島求藥";
+export const GAME_SUBTITLE = "終端文字版 · 第一～二章";
 export const MAX_LEVEL = 99;
 export const SAVE_DIR = ".saves";
 export const SAVE_FILE = "slot1.json";
 export const RULE_WIDTH = 56;
+
+// 抵達蘇州（旗標 to.suzhou 成立）後，戰鬥失敗改於悅來客棧甦醒；此前仍在餘杭客棧。
+export const SUZHOU_RESPAWN_SCENE = "suzhou-inn";
 
 // 裝備部位（順序即選單顯示順序）
 export const EQUIP_SLOTS: { id: EquipSlot; name: string }[] = [

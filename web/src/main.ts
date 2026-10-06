@@ -258,12 +258,12 @@ async function runStory(startId) {
     renderStatus();
     if (node.battle && node.battle.length > 0) {
       var won = await battle(node.battle, node.boss === true);
-      if (!won) return;
+      if (!won) return false;
     }
     if (node.end) {
       logLine("（本章結束 · 後續章節敬請期待）", "sys");
       await message("　");
-      return;
+      return true;
     }
     if (node.choices && node.choices.length > 0) {
       id = await choose(
@@ -276,6 +276,7 @@ async function runStory(startId) {
       id = node.next;
     }
   }
+  return true;
 }
 
 // ───────────────────────── 戰鬥 ─────────────────────────
@@ -912,13 +913,19 @@ async function battle(enemyIds, boss) {
         return true;
       }
       if (alive(state.party).length === 0) {
+        var inSuzhou = state.flags["to.suzhou"] === true;
         logLine("眼前一黑，李逍遙倒了下去……", "warn");
-        logLine("再醒來時，已躺回餘杭客棧的床榻之上。", "dim");
+        logLine(
+          inSuzhou
+            ? "再醒來時，已被同伴送回悅來客棧的客房。"
+            : "再醒來時，已躺回餘杭客棧的床榻之上。",
+          "dim",
+        );
         state.party.forEach(function (m) {
           m.hp = m.maxHp;
           m.mp = m.maxMp;
         });
-        state.sceneId = D.START_SCENE;
+        state.sceneId = inSuzhou ? D.SUZHOU_RESPAWN_SCENE : D.START_SCENE;
         renderStatus();
         await message("　");
         return false;
@@ -944,7 +951,9 @@ async function interact(ia) {
   if (alreadyDone && ia.repeatText) {
     await playText(ia.repeatText);
   } else if (ia.story) {
-    await runStory(ia.story);
+    var storyDone = await runStory(ia.story);
+    // 劇情因戰鬥失敗中斷時，不標記互動完成，讓玩家可重試。
+    if (!storyDone) return;
   } else if (ia.text && ia.text.length > 0) {
     await playText(ia.text);
   }
@@ -1187,13 +1196,24 @@ async function enterScene(id) {
 async function doMagic() {
   // 列出全隊每人的仙術與效果；惟補血仙術可於戰鬥外施展，其餘僅限戰鬥中使用。
   var opts = [];
+  var hasFieldSkill = false;
   state.party.forEach(function (m) {
     m.skills.forEach(function (id) {
       var s = D.SKILLS[id];
       if (!s) return;
-      var usable = s.kind === "heal" && s.mpCost <= m.mp;
+      var field = s.kind === "heal";
+      if (field) hasFieldSkill = true;
+      var usable = field && s.mpCost <= m.mp;
       opts.push({
-        label: m.name + "｜" + s.name + "（真氣 " + s.mpCost + "）— " + s.desc,
+        label:
+          m.name +
+          "｜" +
+          s.name +
+          "（真氣 " +
+          s.mpCost +
+          "）— " +
+          s.desc +
+          (field && !usable ? "　真氣不足" : ""),
         value: { caster: m, skill: s },
         disabled: !usable,
       });
@@ -1207,7 +1227,9 @@ async function doMagic() {
     logLine(
       opts.length === 0
         ? "隊伍尚未習得任何仙術。"
-        : "尚未習得可在戰鬥外使用的仙術（僅補血仙術可於戰鬥外施展）。",
+        : hasFieldSkill
+          ? "真氣不足，無法施展仙術（休息或服藥可恢復真氣）。"
+          : "尚未習得可在戰鬥外使用的仙術（僅補血仙術可於戰鬥外施展）。",
       "dim",
     );
     await message("　");

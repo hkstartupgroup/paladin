@@ -439,4 +439,38 @@ export const ITEMS: Record<string, Item> = {
     desc: "以觀音聖水書寫的靈符。恢復 150 點生命。",
     price: 150,
   },
+
+  // ── 第二章・姑蘇招親 ──
+  "lin-family-sword": {
+    id: "lin-family-sword",
+    name: "林家寶劍",
+    kind: "equip",
+    value: 0,
+    desc: "蘇州林家堡的家傳佩劍，劍身鋒銳、輕重合手。武術 +12。",
+    price: 0,
+    slot: "weapon",
+    bonus: { atk: 12 },
+    equipBy: ["lin-yueru"],
+  },
+  "cloth-boots": {
+    id: "cloth-boots",
+    name: "布靴",
+    kind: "equip",
+    value: 0,
+    desc: "粗布縫製的長統靴，輕便耐走。防禦 +3、身法 +2。",
+    price: 150,
+    slot: "boots",
+    bonus: { def: 3, spd: 2 },
+    equipBy: ["li-xiaoyao", "zhao-linger", "lin-yueru"],
+  },
+  "jade-pendant": {
+    id: "jade-pendant",
+    name: "玉珮",
+    kind: "equip",
+    value: 0,
+    desc: "雕工細緻的古玉，佩之安神定氣。防禦 +4。",
+    price: 300,
+    slot: "accessory",
+    bonus: { def: 4 },
+  },
 };

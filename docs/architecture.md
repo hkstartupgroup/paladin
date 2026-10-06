@@ -46,7 +46,10 @@ paladin/
 │   │   ├── shops.ts                 # 商店資料（鐵匠鋪／木匠鋪／藥鋪）
 │   │   ├── enemies.ts               # 敵人與練武區域資料
 │   │   ├── objectives.ts            # 主線「當前目標」提示資料
-│   │   ├── chapters/chapter01.ts    # 第一章劇情節點
+│   │   ├── chapters/                # 劇情節點（每章一檔）
+│   │   │   ├── chapter01.ts         # 第一章劇情節點
+│   │   │   ├── chapter02.ts         # 第二章劇情節點
+│   │   │   └── index.ts             # 全章節點合併註冊表（STORY_NODES）
 │   │   └── scenes/                  # 場景（每場景一檔，index.ts 彙整）
 │   ├── systems/
 │   │   ├── leveling.ts              # 升級與屬性成長
@@ -74,7 +77,11 @@ paladin/
 
 客棧：`inn-room`、`inn-corridor`、`guest-room-1`、`guest-room`、`inn-hall`、`inn-kitchen`、`inn-shed`、`aunt-room`；
 村鎮：`market`、`shili-po`、`shan-shen-miao`；
-仙靈島：`island-shore`、`island-rock`、`lotus-pond`、`peach-forest`、`moon-palace-out`、`moon-palace`。
+仙靈島：`island-shore`、`island-rock`、`lotus-pond`、`peach-forest`、`moon-palace-out`、`moon-palace`；
+蘇州：`suzhou-outskirts`、`suzhou-inn`、`suzhou-street`、`linjia-arena`、`linjia-hall`、`linjia-garden`、`linjia-west-room`、`linjia-backhill`；
+隱龍窟：`yinlong-cave`、`yinlong-cave-inner`、`yinlong-cave-courtyard`、`yinlong-cave-hall`。
+
+> 劇情節點分章存放於 `src/data/chapters/`，由 `chapters/index.ts` 的 `STORY_NODES` 合併為單一註冊表，供兩版劇情引擎查詢；節點 id 全章唯一（第一章 `s-*`、第二章 `s2-*`）。
 
 ## 主要檔案連結
 
@@ -88,7 +95,7 @@ paladin/
 - 客棧投宿：[src/systems/rest.ts](../src/systems/rest.ts)
 - 場景資料：[src/data/scenes/](../src/data/scenes/)（每場景一檔，`index.ts` 彙整）
 - 商店資料：[src/data/shops.ts](../src/data/shops.ts)
-- 劇情資料：[src/data/chapters/chapter01.ts](../src/data/chapters/chapter01.ts)
+- 劇情資料：[src/data/chapters/chapter01.ts](../src/data/chapters/chapter01.ts)、[chapter02.ts](../src/data/chapters/chapter02.ts)（合併註冊表：[chapters/index.ts](../src/data/chapters/index.ts)）
 - 主流程：[src/engine/game.ts](../src/engine/game.ts)
 - 存讀檔：[src/engine/save.ts](../src/engine/save.ts)
 - 網頁版引擎：[web/src/main.ts](../web/src/main.ts)（流程與 DOM，共用 src/ 的 systems 與 data）

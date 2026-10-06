@@ -6,6 +6,11 @@ export const market: GameScene = {
   exits: [
     { to: "inn-hall", label: "走回餘杭客棧" },
     {
+      to: "suzhou-outskirts",
+      label: "搭方老闆的船，前往蘇州",
+      requires: ["to.suzhou"],
+    },
+    {
       to: "shili-po",
       label: "往村外十里坡",
       requires: ["island.returned"],

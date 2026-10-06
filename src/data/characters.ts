@@ -52,12 +52,13 @@ export const CHARACTER_TEMPLATES: Record<string, CharacterTemplate> = {
     name: "趙靈兒",
     gender: "female",
     base: { hp: 78, mp: 36, atk: 10, def: 6, spd: 12, mag: 16 },
-    // 初始五系咒法與觀音咒、淨衣咒、金剛咒、回夢、冰心訣。
+    // 初始五系咒法與觀音咒、淨衣咒、金剛咒、回夢、還魂咒、冰心訣。
     baseSkills: [
       "guan-yin",
       "jing-yi",
       "jin-gang",
       "hui-meng",
+      "huan-hun",
       "ice-heart",
       "feng-zhou",
       "lei-zhou",
@@ -81,6 +82,31 @@ export const CHARACTER_TEMPLATES: Record<string, CharacterTemplate> = {
       weapon: "fairy-sword",
       armor: "cloth-robe",
       head: "silk-scarf",
+      boots: "straw-shoes",
+    },
+  },
+  "lin-yueru": {
+    id: "lin-yueru",
+    name: "林月如",
+    gender: "female",
+    // 南武林盟主林天南之女，家傳劍法凌厲，武術與身法見長、靈力偏低。
+    base: { hp: 86, mp: 20, atk: 15, def: 9, spd: 13, mag: 4 },
+    // 擋格彩蛋：林月如只替李逍遙擋格。
+    guard: { ids: ["li-xiaoyao"] },
+    // 凝神歸元、氣劍指為自帶；其餘依原作升級習得。
+    baseSkills: ["ning-shen", "qi-jian-zhi"],
+    learnset: [
+      { level: 7, skill: "yi-yang-zhi" },
+      { level: 10, skill: "tong-qian-biao" },
+      { level: 14, skill: "qi-jue-jian-qi" },
+      { level: 17, skill: "yuan-ling" },
+      { level: 18, skill: "qian-kun-yi-zhi" },
+      { level: 22, skill: "zhan-long-jue" },
+    ],
+    // 入隊時自帶林家寶劍與簡單衣裝。
+    defaultEquipment: {
+      weapon: "lin-family-sword",
+      armor: "cloak",
       boots: "straw-shoes",
     },
   },

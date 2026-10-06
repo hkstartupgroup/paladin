@@ -1,4 +1,9 @@
-import { EQUIP_SLOTS, GAME_SUBTITLE, GAME_TITLE } from "../config/constants";
+import {
+  EQUIP_SLOTS,
+  GAME_SUBTITLE,
+  GAME_TITLE,
+  SUZHOU_RESPAWN_SCENE,
+} from "../config/constants";
 import {
   Character,
   EquipStats,
@@ -13,7 +18,7 @@ import {
   StoryNode,
 } from "../models/types";
 import { createCharacter } from "../data/characters";
-import { CHAPTER_01 } from "../data/chapters/chapter01";
+import { STORY_NODES } from "../data/chapters";
 import { SCENES, START_SCENE } from "../data/scenes";
 import { AREAS } from "../data/enemies";
 import { SKILLS } from "../data/skills";
@@ -240,7 +245,9 @@ export class Game {
     if (alreadyDone && ia.repeatText) {
       await playText(ia.repeatText);
     } else if (ia.story) {
-      await this.runStory(ia.story);
+      const completed = await this.runStory(ia.story);
+      // 劇情因戰鬥失敗中斷時，不標記互動完成，讓玩家可重試。
+      if (!completed) return;
     } else if (ia.text && ia.text.length > 0) {
       await playText(ia.text);
     }
@@ -280,13 +287,18 @@ export class Game {
     // 列出全隊每人的仙術與效果；惟補血仙術可於戰鬥外施展，其餘僅限戰鬥中使用。
     type Entry = { caster: Character; skill: Skill };
     const options: PickOption<Entry>[] = [];
+    let hasFieldSkill = false; // 是否有「可於戰鬥外使用」的補血仙術
     for (const m of this.state.party) {
       for (const id of m.skills) {
         const s = SKILLS[id];
         if (!s) continue;
-        const usable = s.kind === "heal" && s.mpCost <= m.mp;
+        const field = s.kind === "heal";
+        if (field) hasFieldSkill = true;
+        const usable = field && s.mpCost <= m.mp;
         options.push({
-          label: `${m.name}｜${s.name}（真氣 ${s.mpCost}）— ${s.desc}`,
+          label: `${m.name}｜${s.name}（真氣 ${s.mpCost}）— ${s.desc}${
+            field && !usable ? "　真氣不足" : ""
+          }`,
           value: { caster: m, skill: s },
           disabled: !usable,
         });
@@ -297,7 +309,9 @@ export class Game {
       ui.info(
         options.length === 0
           ? "隊伍尚未習得任何仙術。"
-          : "尚未習得可在戰鬥外使用的仙術（僅補血仙術可於戰鬥外施展）。",
+          : hasFieldSkill
+            ? "真氣不足，無法施展仙術（休息或服藥可恢復真氣）。"
+            : "尚未習得可在戰鬥外使用的仙術（僅補血仙術可於戰鬥外施展）。",
       );
       await pause();
       return;
@@ -678,15 +692,15 @@ export class Game {
     await pause();
   }
 
-  private async runStory(startId: string): Promise<void> {
-    const runner = new StoryRunner(CHAPTER_01.nodes, {
+  private async runStory(startId: string): Promise<boolean> {
+    const runner = new StoryRunner(STORY_NODES, {
       battle: (ids, boss) => this.battle(ids, boss),
       reward: (node) => this.applyRewards(node),
       learn: (ids) => this.learnSkills(ids),
       setFlags: (ids) => this.setFlags(ids),
       join: (ids) => this.joinParty(ids),
     });
-    await runner.run(startId);
+    return runner.run(startId);
   }
 
   private setFlags(flags: string[]): void {
@@ -739,16 +753,19 @@ export class Game {
       return false;
     }
     if (!outcome.victory) {
+      const inSuzhou = this.state.flags["to.suzhou"] === true;
       ui.blank();
       ui.narrate(
         "眼前一黑，李逍遙倒了下去……",
-        "再醒來時，已躺回餘杭客棧的床榻之上。",
+        inSuzhou
+          ? "再醒來時，已被同伴送回悅來客棧的客房。"
+          : "再醒來時，已躺回餘杭客棧的床榻之上。",
       );
       for (const m of this.state.party) {
         m.hp = m.maxHp;
         m.mp = m.maxMp;
       }
-      this.state.sceneId = START_SCENE;
+      this.state.sceneId = inSuzhou ? SUZHOU_RESPAWN_SCENE : START_SCENE;
       await pause();
       return false;
     }

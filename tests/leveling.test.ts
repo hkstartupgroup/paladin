@@ -7,6 +7,9 @@ import { AREAS, ENEMIES } from "../src/data/enemies";
 import { ITEMS } from "../src/data/items";
 import { SHOPS } from "../src/data/shops";
 import { CHAPTER_01 } from "../src/data/chapters/chapter01";
+import { CHAPTER_02 } from "../src/data/chapters/chapter02";
+import { STORY_NODES } from "../src/data/chapters";
+import { OBJECTIVE_ALL_DONE } from "../src/data/objectives";
 import { SCENES, START_SCENE } from "../src/data/scenes";
 import {
   canEquip,
@@ -201,10 +204,10 @@ test("異常狀態：施加與回合倒數", () => {
   assert.equal(c.status.poison, undefined);
 });
 
-test("第一章劇情節點結構完整（next／選項／敵人／技能／物品皆存在）", () => {
-  const ch = CHAPTER_01;
-  const ids = new Set(Object.keys(ch.nodes));
-  for (const node of Object.values(ch.nodes)) {
+test("第一、二章劇情節點結構完整（next／選項／敵人／技能／物品皆存在）", () => {
+  const nodes = STORY_NODES;
+  const ids = new Set(Object.keys(nodes));
+  for (const node of Object.values(nodes)) {
     if (node.next)
       assert.ok(ids.has(node.next), `${node.id} 的 next 不存在：${node.next}`);
     for (const c of node.choices ?? [])
@@ -218,6 +221,22 @@ test("第一章劇情節點結構完整（next／選項／敵人／技能／物�
     for (const it of node.rewards?.items ?? [])
       assert.ok(ITEMS[it.itemId], `${node.id} 的物品不存在：${it.itemId}`);
   }
+});
+
+test("第二章節點不與第一章衝突，且章末收尾", () => {
+  const ch1 = new Set(Object.keys(CHAPTER_01.nodes));
+  for (const id of Object.keys(CHAPTER_02.nodes))
+    assert.ok(!ch1.has(id), `第二章節點 id 與第一章衝突：${id}`);
+  assert.equal(
+    CHAPTER_02.nodes["s2-fox-after"].end,
+    true,
+    "第二章於隱龍窟內殿作結",
+  );
+  assert.equal(
+    CHAPTER_02.nodes["s2-backhill"].joinParty?.includes("lin-yueru"),
+    true,
+    "林月如於林家後山入隊",
+  );
 });
 
 test("第一章台詞依 ch01.md 全文（關鍵節點與角色名）", () => {
@@ -252,7 +271,7 @@ test("場景結構完整（起始場景、出口與互動指向皆存在）", ()
   for (const scene of Object.values(SCENES)) {
     if (scene.enterStory)
       assert.ok(
-        CHAPTER_01.nodes[scene.enterStory],
+        STORY_NODES[scene.enterStory],
         `${scene.id} 的 enterStory 不存在：${scene.enterStory}`,
       );
     for (const ex of scene.exits)
@@ -263,7 +282,7 @@ test("場景結構完整（起始場景、出口與互動指向皆存在）", ()
       seen.add(ia.id);
       if (ia.story)
         assert.ok(
-          CHAPTER_01.nodes[ia.story],
+          STORY_NODES[ia.story],
           `${scene.id}/${ia.id} 的 story 不存在：${ia.story}`,
         );
       if (ia.area)
@@ -888,7 +907,24 @@ test("當前目標：依主線旗標逐條推進，全完成後顯示收尾提�
     "chapter1.done",
   ])
     state.flags[f] = true;
-  assert.equal(currentObjective(state), "第一章已完成，敬請期待後續章節。");
+  // 第一章完成後，目標續接第二章。
+  assert.equal(currentObjective(state), "搭方老闆的船，前往蘇州。");
+
+  for (const f of [
+    "sz.outskirts",
+    "sz.inn",
+    "sz.arena",
+    "sz.hall",
+    "sz.bazi",
+    "sz.linger.lost",
+    "sz.yueru.join",
+    "sz.cave",
+    "sz.snake",
+    "sz.courtyard",
+    "ch2.done",
+  ])
+    state.flags[f] = true;
+  assert.equal(currentObjective(state), OBJECTIVE_ALL_DONE);
 });
 
 test("客棧出口依劇情旗標逐步解鎖", () => {
@@ -1313,4 +1349,163 @@ test("敵人依原作校準：綠葉妖精習得風咒，岩徑略高於十里�
     minIslandHp > shiliMid,
     `岩徑應略高於十里坡中段（${minIslandHp} > ${shiliMid}）`,
   );
+});
+
+test("第二章：林月如角色模板與家傳劍法齊備", () => {
+  const yueru = CHARACTER_TEMPLATES["lin-yueru"];
+  assert.ok(yueru, "林月如角色模板存在");
+  assert.equal(yueru.name, "林月如");
+  assert.equal(yueru.gender, "female");
+  assert.deepEqual(
+    yueru.guard,
+    { ids: ["li-xiaoyao"] },
+    "林月如只替李逍遙擋格",
+  );
+  assert.deepEqual(yueru.defaultEquipment, {
+    weapon: "lin-family-sword",
+    armor: "cloak",
+    boots: "straw-shoes",
+  });
+
+  // 自帶凝神歸元、氣劍指；其餘依原作升級習得。
+  for (const id of ["ning-shen", "qi-jian-zhi"]) {
+    assert.ok(yueru.baseSkills.includes(id), `林月如自帶技能：${id}`);
+    assert.ok(SKILLS[id], `缺少技能：${id}`);
+  }
+  for (const l of yueru.learnset)
+    assert.ok(SKILLS[l.skill], `缺少技能：${l.skill}`);
+  assert.deepEqual(
+    yueru.learnset.map((l) => l.skill),
+    [
+      "yi-yang-zhi",
+      "tong-qian-biao",
+      "qi-jue-jian-qi",
+      "yuan-ling",
+      "qian-kun-yi-zhi",
+      "zhan-long-jue",
+    ],
+  );
+
+  // 入隊自帶林家寶劍（武術 +12）。
+  const c = createCharacter("lin-yueru");
+  assert.equal(c.equipment.weapon, "lin-family-sword");
+  recomputeStats(c);
+  assert.equal(c.atk, c.base.atk + 12);
+
+  // 擋格彩蛋：李逍遙不替林月如擋格，林月如只替李逍遙擋格。
+  const li = createCharacter("li-xiaoyao");
+  assert.equal(willingGuardian(c, [li, c]), null, "李逍遙不替林月如擋格");
+  assert.equal(willingGuardian(li, [li, c]), c, "林月如替李逍遙擋格");
+});
+
+test("第二章：蘇州場景依劇情旗標逐步解鎖", () => {
+  const state: GameState = {
+    party: [],
+    gold: 0,
+    items: [],
+    sceneId: "market",
+    flags: {},
+  };
+  const tos = (id: string): string[] =>
+    availableExits(SCENES[id], state).map((e) => e.to);
+
+  // 尚未啟程，市集不往蘇州。
+  assert.ok(!tos("market").includes("suzhou-outskirts"), "未啟程不往蘇州");
+  state.flags["to.suzhou"] = true;
+  assert.ok(
+    tos("market").includes("suzhou-outskirts"),
+    "第一章結束後可搭船前往蘇州",
+  );
+
+  // 蘇州城外：救下大小姐後方可進客棧。
+  assert.ok(
+    !tos("suzhou-outskirts").includes("suzhou-inn"),
+    "城外事件結束前不得進客棧",
+  );
+  state.flags["sz.outskirts"] = true;
+  assert.ok(
+    tos("suzhou-outskirts").includes("suzhou-inn"),
+    "事件結束後可進客棧",
+  );
+
+  // 比武招親：勝出後方可入大廳；大廳可往後院。
+  assert.ok(!tos("linjia-arena").includes("linjia-hall"), "未勝出不得入大廳");
+  state.flags["sz.arena"] = true;
+  assert.ok(tos("linjia-arena").includes("linjia-hall"), "勝出後可入大廳");
+  assert.ok(tos("linjia-hall").includes("linjia-garden"), "可往林家後院");
+  assert.ok(
+    !tos("linjia-hall").includes("linjia-west-room"),
+    "妖怪事件前不得往西廂房",
+  );
+  state.flags["sz.haunt"] = true;
+  assert.ok(
+    tos("linjia-hall").includes("linjia-west-room"),
+    "妖怪事件後可往西廂房",
+  );
+
+  // 靈兒失蹤後方可往後山，並在後山通往隱龍窟。
+  assert.ok(
+    !tos("linjia-hall").includes("linjia-backhill"),
+    "靈兒失蹤前不往後山",
+  );
+  state.flags["sz.linger.lost"] = true;
+  assert.ok(
+    tos("linjia-hall").includes("linjia-backhill"),
+    "靈兒失蹤後可往後山",
+  );
+  state.flags["sz.snake"] = true;
+  assert.ok(
+    tos("yinlong-cave-inner").includes("yinlong-cave-courtyard"),
+    "逐退蛇妖後可往中庭",
+  );
+});
+
+test("第二章：隱龍窟練功區與姑蘇招親敵人齊備", () => {
+  const area = AREAS["yinlong-cave"];
+  assert.ok(area, "隱龍窟練功區存在");
+  assert.ok(area.encounters.length > 0, "隱龍窟缺少遭遇表");
+  assert.ok((area.loot?.length ?? 0) > 0, "隱龍窟缺少寶箱表");
+  for (const group of area.encounters)
+    for (const id of group) assert.ok(ENEMIES[id], `缺少敵人：${id}`);
+
+  for (const id of [
+    "thug",
+    "thug-leader",
+    "yueru-duel",
+    "snake-demon",
+    "fox-demon",
+  ])
+    assert.ok(ENEMIES[id], `缺少第二章敵人：${id}`);
+
+  // 比武招親由林月如出戰；隱龍窟內殿為狐妖女 Boss 戰。
+  assert.deepEqual(CHAPTER_02.nodes["s2-duel"].battle, ["yueru-duel"]);
+  assert.deepEqual(CHAPTER_02.nodes["s2-fox-fight"].battle, ["fox-demon"]);
+  assert.equal(CHAPTER_02.nodes["s2-fox-fight"].boss, true);
+});
+
+test("第二章台詞依 ch02.md 全文（關鍵節點與角色名）", () => {
+  const nodes = CHAPTER_02.nodes;
+  const has = (id: string, frag: string): void => {
+    const node = nodes[id];
+    assert.ok(node, `缺少節點：${id}`);
+    assert.ok(
+      node.text.some((l) => l.includes(frag)),
+      `${id} 應包含台詞片段：${frag}`,
+    );
+  };
+
+  has("s2-arrive", "這位大姐，他們倆犯了什麼錯");
+  has("s2-outskirts-after", "少假惺惺～看劍！");
+  has("s2-inn", "癩蛤蟆想吃天鵝肉");
+  has("s2-fortune", "姑娘瑤光聚頂、靈氣逼人");
+  has("s2-arena-intro", "比武招親報名啊");
+  has("s2-duel-after", "我輸了");
+  has("s2-hall1", "獨孤劍聖");
+  has("s2-garden", "胸口很悶，頭有點疼");
+  has("s2-bazi", "西廂房裡有妖怪");
+  has("s2-west", "半人半蛇的妖怪");
+  has("s2-backhill", "前面不遠處有座隱龍窟");
+  has("s2-cave-inner", "別殺我～別殺我");
+  has("s2-fox-intro", "你們殺了我相公");
+  has("s2-fox-after", "趙姑娘真的不在這裡");
 });

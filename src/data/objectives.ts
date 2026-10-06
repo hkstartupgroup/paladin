@@ -34,6 +34,19 @@ export const OBJECTIVES: Objective[] = [
   { done: ["baiyue.defeated"], text: "回客棧，面對拜月教一夥。" },
   { done: ["to.miaojiang"], text: "聽嬸嬸的安排。" },
   { done: ["chapter1.done"], text: "到渡口市集登上方老闆的船，啟程苗疆。" },
+
+  // ── 第二章・姑蘇招親 ──
+  { done: ["sz.outskirts"], text: "搭方老闆的船，前往蘇州。" },
+  { done: ["sz.inn"], text: "進蘇州城，到悅來客棧落腳。" },
+  { done: ["sz.arena"], text: "進城逛逛，再往林家堡瞧熱鬧。" },
+  { done: ["sz.hall"], text: "隨林天南入林家大廳，說明白比武之事。" },
+  { done: ["sz.bazi"], text: "到林家後院探視趙姑娘，再回大廳。" },
+  { done: ["sz.linger.lost"], text: "西廂房鬧妖怪、趙姑娘失蹤——趕去查看！" },
+  { done: ["sz.yueru.join"], text: "往林家後山，與林月如會合。" },
+  { done: ["sz.cave"], text: "隨林月如前往隱龍窟尋人。" },
+  { done: ["sz.snake"], text: "深入隱龍窟，查出趙姑娘的下落。" },
+  { done: ["sz.courtyard"], text: "往洞窟更深處找去。" },
+  { done: ["ch2.done"], text: "在內殿救出被抓的姑娘，擊敗狐妖女。" },
 ];
 
-export const OBJECTIVE_ALL_DONE = "第一章已完成，敬請期待後續章節。";
+export const OBJECTIVE_ALL_DONE = "第二章已完成，敬請期待後續章節。";
