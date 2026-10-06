@@ -1409,9 +1409,12 @@ test("第二章：蘇州場景依劇情旗標逐步解鎖", () => {
   const tos = (id: string): string[] =>
     availableExits(SCENES[id], state).map((e) => e.to);
 
-  // 尚未啟程，市集不往蘇州。
-  assert.ok(!tos("market").includes("suzhou-outskirts"), "未啟程不往蘇州");
-  state.flags["to.suzhou"] = true;
+  // 尚未完成第一章，市集不往蘇州。
+  assert.ok(
+    !tos("market").includes("suzhou-outskirts"),
+    "未完成第一章不往蘇州",
+  );
+  state.flags["chapter1.done"] = true;
   assert.ok(
     tos("market").includes("suzhou-outskirts"),
     "第一章結束後可搭船前往蘇州",

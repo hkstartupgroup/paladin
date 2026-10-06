@@ -913,7 +913,7 @@ async function battle(enemyIds, boss) {
         return true;
       }
       if (alive(state.party).length === 0) {
-        var inSuzhou = state.flags["to.suzhou"] === true;
+        var inSuzhou = state.flags["chapter1.done"] === true;
         logLine("眼前一黑，李逍遙倒了下去……", "warn");
         logLine(
           inSuzhou

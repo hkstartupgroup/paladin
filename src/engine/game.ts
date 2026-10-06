@@ -753,7 +753,7 @@ export class Game {
       return false;
     }
     if (!outcome.victory) {
-      const inSuzhou = this.state.flags["to.suzhou"] === true;
+      const inSuzhou = this.state.flags["chapter1.done"] === true;
       ui.blank();
       ui.narrate(
         "眼前一黑，李逍遙倒了下去……",

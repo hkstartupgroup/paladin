@@ -8,7 +8,7 @@ export const market: GameScene = {
     {
       to: "suzhou-outskirts",
       label: "搭方老闆的船，前往蘇州",
-      requires: ["to.suzhou"],
+      requires: ["chapter1.done"],
     },
     {
       to: "shili-po",

@@ -799,7 +799,7 @@ export const CHAPTER_01: Chapter = {
         "李逍遙：香蘭姐真是杞人憂天，我們才不會那麼倒楣呢！再說到了苗疆，只要換上苗族的裝束，可不就萬無一失了嗎？",
         "王小虎：逍遙哥！仙女姊姊！你們可要早點回來啊～",
       ],
-      setFlags: ["chapter1.done", "to.suzhou"],
+      setFlags: ["chapter1.done"],
       end: true,
     },
   },

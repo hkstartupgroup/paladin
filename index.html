@@ -1012,7 +1012,7 @@ button:disabled {
           "李逍遙：香蘭姐真是杞人憂天，我們才不會那麼倒楣呢！再說到了苗疆，只要換上苗族的裝束，可不就萬無一失了嗎？",
           "王小虎：逍遙哥！仙女姊姊！你們可要早點回來啊～"
         ],
-        setFlags: ["chapter1.done", "to.suzhou"],
+        setFlags: ["chapter1.done"],
         end: true
       }
     }
@@ -2904,7 +2904,7 @@ button:disabled {
       {
         to: "suzhou-outskirts",
         label: "搭方老闆的船，前往蘇州",
-        requires: ["to.suzhou"]
+        requires: ["chapter1.done"]
       },
       {
         to: "shili-po",
@@ -5472,7 +5472,7 @@ button:disabled {
           return true;
         }
         if (alive(state.party).length === 0) {
-          var inSuzhou = state.flags["to.suzhou"] === true;
+          var inSuzhou = state.flags["chapter1.done"] === true;
           logLine("眼前一黑，李逍遙倒了下去……", "warn");
           logLine(
             inSuzhou ? "再醒來時，已被同伴送回悅來客棧的客房。" : "再醒來時，已躺回餘杭客棧的床榻之上。",

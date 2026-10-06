@@ -7,7 +7,7 @@ export const SAVE_DIR = ".saves";
 export const SAVE_FILE = "slot1.json";
 export const RULE_WIDTH = 56;
 
-// 抵達蘇州（旗標 to.suzhou 成立）後，戰鬥失敗改於悅來客棧甦醒；此前仍在餘杭客棧。
+// 完成第一章（旗標 chapter1.done）後，戰鬥失敗改於悅來客棧甦醒；此前仍在餘杭客棧。
 export const SUZHOU_RESPAWN_SCENE = "suzhou-inn";
 
 // 裝備部位（順序即選單顯示順序）
