@@ -1,0 +1,82 @@
+import { GameScene } from "../../models/types";
+
+export const lotusPond: GameScene = {
+  id: "lotus-pond",
+  name: "仙靈島·荷花池",
+  exits: [
+    { to: "island-rock", label: "回岩徑" },
+    { to: "peach-forest", label: "步上蓮葉往桃樹林", requires: ["lotus.open"] },
+  ],
+  interactables: [
+    {
+      id: "statue-1",
+      name: "阿修羅石像（一）",
+      kind: "object",
+      text: ["李逍遙取出破天鎚，朝石像奮力一擊——石像應聲碎裂。"],
+      requires: ["sail"],
+      setFlags: ["statue.1"],
+    },
+    {
+      id: "statue-2",
+      name: "阿修羅石像（二）",
+      kind: "object",
+      text: ["李逍遙取出破天鎚，朝石像奮力一擊——石像應聲碎裂。"],
+      requires: ["sail"],
+      setFlags: ["statue.2"],
+    },
+    {
+      id: "statue-3",
+      name: "阿修羅石像（三）",
+      kind: "object",
+      text: ["李逍遙取出破天鎚，朝石像奮力一擊——石像應聲碎裂。"],
+      requires: ["sail"],
+      setFlags: ["statue.3"],
+    },
+    {
+      id: "statue-4",
+      name: "阿修羅石像（四）",
+      kind: "object",
+      text: ["李逍遙取出破天鎚，朝石像奮力一擊——石像應聲碎裂。"],
+      requires: ["sail"],
+      setFlags: ["statue.4"],
+    },
+    {
+      id: "statue-5",
+      name: "阿修羅石像（五）",
+      kind: "object",
+      text: ["李逍遙取出破天鎚，朝石像奮力一擊——石像應聲碎裂。"],
+      requires: ["sail"],
+      setFlags: ["statue.5"],
+    },
+    {
+      id: "statue-6",
+      name: "阿修羅石像（六）",
+      kind: "object",
+      text: ["李逍遙取出破天鎚，朝石像奮力一擊——石像應聲碎裂。"],
+      requires: ["sail"],
+      setFlags: ["statue.6"],
+    },
+    {
+      id: "array-eye",
+      name: "蓮葉陣眼",
+      kind: "object",
+      text: ["六具石像盡碎，池心蓮葉緩緩散開，現出一條通往桃樹林的蹊徑。"],
+      requires: [
+        "statue.1",
+        "statue.2",
+        "statue.3",
+        "statue.4",
+        "statue.5",
+        "statue.6",
+      ],
+      setFlags: ["lotus.open"],
+    },
+    {
+      id: "pond-lotus",
+      name: "池畔的蓮蓬",
+      kind: "object",
+      text: ["蓮蓬裡結著幾顆雪蓮子。"],
+      items: [{ itemId: "snow-lotus", qty: 1 }],
+    },
+  ],
+};

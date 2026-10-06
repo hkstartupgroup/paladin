@@ -1,0 +1,65 @@
+import { GameScene } from "../../models/types";
+
+export const innKitchen: GameScene = {
+  id: "inn-kitchen",
+  name: "餘杭客棧·廚房",
+  exits: [{ to: "inn-hall", label: "回大廳" }],
+  interactables: [
+    {
+      id: "aunt-kitchen",
+      name: "李大娘",
+      kind: "npc",
+      story: "s-kitchen",
+      requires: ["chase.drunk"],
+      repeatable: true,
+      hideWhen: ["drunk.deal"],
+      repeatText: ["李大娘：還不快把桌上的酒菜端上樓去！"],
+    },
+    {
+      id: "dish",
+      name: "桌上的酒菜",
+      kind: "object",
+      story: "s-take-dish",
+      requires: ["kitchen.ordered"],
+    },
+    {
+      id: "aunt-errand",
+      name: "李大娘",
+      kind: "npc",
+      story: "s-errand",
+      requires: ["drunk.deal"],
+      hideWhen: ["aunt.sick"],
+      gold: 50,
+      repeatable: true,
+      repeatText: ["李大娘：蝦買回來了嗎？還不快去市場！"],
+    },
+    {
+      id: "steamer",
+      name: "蒸籠",
+      kind: "object",
+      text: ["蒸籠裡還溫著幾塊糯米糕。"],
+      items: [{ itemId: "rice-cake", qty: 1 }],
+    },
+    {
+      id: "cupboard",
+      name: "灶邊的櫥櫃",
+      kind: "object",
+      text: ["櫥櫃角落擱著一小包鹽巴。"],
+      items: [{ itemId: "salt", qty: 1 }],
+    },
+    {
+      id: "jar",
+      name: "牆角的罈子",
+      kind: "object",
+      text: ["罈子裡醃著幾顆果子。"],
+      items: [{ itemId: "fruit", qty: 1 }],
+    },
+    {
+      id: "stove-meat",
+      name: "灶邊的燒肉",
+      kind: "object",
+      text: ["灶邊擱著一盤剛燒好的肉。"],
+      items: [{ itemId: "roast-meat", qty: 1 }],
+    },
+  ],
+};
